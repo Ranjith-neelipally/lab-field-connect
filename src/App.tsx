@@ -4,7 +4,7 @@ function App() {
 
   return (
     <>
-      hello hema how are you?
+      hello how are you?
     </>
   )
 }
