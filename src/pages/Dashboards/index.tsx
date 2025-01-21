@@ -7,7 +7,7 @@ import { ContentWrapper } from "my-material-theme-ui-components";
 import BarGraph from "./Charts/BarGraph";
 import LineGraph from "./Charts/LineGraph";
 import ScatterChart from "./Charts/ScatterChart";
-import React from "react";
+
 
 function Dashboards() {
   const [activeTab, setactiveTab] = useState<string>("Bar Graph");
