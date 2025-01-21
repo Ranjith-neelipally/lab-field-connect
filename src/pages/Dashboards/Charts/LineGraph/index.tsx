@@ -4,7 +4,6 @@ import {
     YAxis,
     Tooltip,
     Legend,
-    Bar,
     LineChart,
     Line,
     ResponsiveContainer,

@@ -1,4 +1,3 @@
-import { ContentWrapper } from "my-material-theme-ui-components";
 import { StyledTabs } from "./styles";
 
 export interface TabOptions {
