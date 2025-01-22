@@ -26,3 +26,6 @@ body {
   flex: 1;
 }
 
+.navlinks-section > ul > li > button {
+  text-align: left;
+}

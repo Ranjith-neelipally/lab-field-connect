@@ -1,44 +1,71 @@
 import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-  } from "recharts";
-  import { DashboardData } from "../../Sampledata";
-  
-  function BarGraph() {
-    return (
-      <ResponsiveContainer width={"100%"} height={250}>
-        <BarChart width={730} height={250} data={DashboardData} layout="vertical">
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" />
-          <YAxis dataKey="replication" type="category" />
-          <Tooltip
-            formatter={(value, name) => {
-              let unit = "";
-              // Define units based on the dataKey
-              if (name === "GerminationRate") unit = "%";
-              if (name === "NutrientLevel") unit = "mg/kg";
-              if (name === "PlantHeight") unit = "cm";
-              if (name === "YieldPerArea") unit = "kg/m²";
-              if (name === "InsectCount") unit = "per unit";
-              return [`${value} ${unit}`, name];
-            }}
-          />{" "}
-          <Legend />
-          <Bar dataKey="GerminationRate" fill="#8884d8" />
-          <Bar dataKey="NutrientLevel" fill="#82ca9d" />
-          <Bar dataKey="PlantHeight" fill="#ffc658" />
-          <Bar dataKey="YieldPerArea" fill="#ff8042" />
-          <Bar dataKey="InsectCount" fill="#00C49F" />
-        </BarChart>
-      </ResponsiveContainer>
-    );
-  }
-  
-  export default BarGraph;
-  
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  ComposedChart,
+  Line,
+} from "recharts";
+import { ChartProps } from "../../Sampledata";
+
+function BarGraph({ dashboardData, LineData, lineKey }: ChartProps) {
+  const treatmentKeys = Object.keys(dashboardData[0]).filter(
+    (key) => key !== "title"
+  );
+
+  const maxBarValue = Math.max(
+    ...dashboardData.flatMap((replication: any) =>
+      Object.values(replication).filter((value) => typeof value === "number")
+    )
+  );
+
+  return (
+    <ResponsiveContainer width={"100%"} height={220}>
+      <ComposedChart
+        width={730}
+        height={300}
+        barSize={30}
+        data={treatmentKeys.map((treatment) => {
+          const entry: any = { treatment };
+          dashboardData.forEach((replication: any) => {
+            entry[replication.title] = replication[treatment];
+          });
+          return entry;
+        })}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="treatment" type="category" />
+        <YAxis domain={[0, maxBarValue + 20]} />
+        <Tooltip />
+        {LineData && (
+          <Line
+            type="monotone"
+            data={LineData} 
+            dataKey={lineKey} 
+            stroke="#ff0000" 
+            strokeWidth={2}
+            dot={{ r: 5 }} 
+            name="Midpoint Line"
+          />
+        )}
+        {dashboardData.map((replication: any) => (
+          <>
+            {replication.title !== "fillColor" && (
+              <Bar
+                key={replication.title}
+                dataKey={replication.title}
+                fill={replication.fillColor}
+              />
+            )}
+          </>
+        ))}
+      </ComposedChart>
+    </ResponsiveContainer>
+  );
+}
+
+export default BarGraph;

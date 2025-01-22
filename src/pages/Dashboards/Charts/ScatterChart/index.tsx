@@ -8,40 +8,38 @@ import {
     ScatterChart as ScatterChaat,
     ResponsiveContainer,
   } from "recharts";
-  import { DashboardData } from "../../Sampledata";
+  import { ChartProps } from "../../Sampledata";
   
-  function ScatterChart() {
+  function ScatterChart({ dashboardData }: ChartProps) {
+    const treatmentKeys: string[] = Object.keys(dashboardData[0]).filter(
+      (key) => key !== "title"
+    );
+    const transformedData = treatmentKeys.flatMap((treatment) => {
+      return dashboardData.map((replication: any) => ({
+        treatment,
+        value: replication[treatment],
+        replication: replication.title,
+      }));
+    });
     return (
-      <ResponsiveContainer width={"100%"} height={250}>
-        <ScatterChaat
-          width={730}
-          height={250}
-          layout="vertical"
-          data={DashboardData}
-        >
+      <ResponsiveContainer width={"100%"} height={220}>
+        <ScatterChaat width={730} height={250}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis />
-          <YAxis dataKey="replication" type="category" />
+          <XAxis dataKey="treatment" type="category" />
+          <YAxis dataKey="value" />
+          <Tooltip />
   
-          <Tooltip
-            formatter={(value, name) => {
-              let unit = "";
-              if (name === "GerminationRate") unit = "%";
-              if (name === "NutrientLevel") unit = "mg/kg";
-              if (name === "PlantHeight") unit = "cm";
-              if (name === "YieldPerArea") unit = "kg/m²";
-              if (name === "InsectCount") unit = "per unit";
-              return [`${value} ${unit}`, name];
-            }}
-          />
-  
-          <Legend />
-  
-          <Scatter dataKey="GerminationRate" fill="#8884d8" />
-          <Scatter dataKey="NutrientLevel" fill="#82ca9d" />
-          <Scatter dataKey="PlantHeight" fill="#ffc658" />
-          <Scatter dataKey="YieldPerArea" fill="#ff8042" />
-          <Scatter dataKey="InsectCount" fill="#00C49F" />
+          {dashboardData.map((replication: any) => (
+            <Scatter
+              key={replication.title}
+              name={replication.title}
+              data={transformedData.filter(
+                (d) => d.replication === replication.title
+              )}
+              fill={replication.fillColor}
+              stroke={replication.fillColor}
+            />
+          ))}
         </ScatterChaat>
       </ResponsiveContainer>
     );

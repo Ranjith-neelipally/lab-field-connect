@@ -1,6 +1,7 @@
 import { TopNavBar, Avatar } from "my-material-theme-ui-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import image from "../../assets/logo.png"
 
 function TopNavBarComponnet({ isMobile }: any) {
   const navigate = useNavigate();
@@ -102,9 +103,9 @@ function TopNavBarComponnet({ isMobile }: any) {
   return (
     <TopNavBar
       navItems={NavItemArray}
-      topnavIcon={<Avatar label="RP" />}
-      navbarHeaderText="Research Pal"
-      navBarHeaderDesc="A platform to help your research"
+      topnavIcon={<img src={image} style={{ height: "auto", width: "50px" }} />}
+      navbarHeaderText="Lab Field Connect"
+      navBarHeaderDesc="Research Platform"
       $navLoaction={isMobile ? "" : "side"}
     />
   );

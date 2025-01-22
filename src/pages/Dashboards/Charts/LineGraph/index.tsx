@@ -1,49 +1,46 @@
 import {
-    CartesianGrid,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
-    LineChart,
-    Line,
-    ResponsiveContainer,
-  } from "recharts";
-  import { DashboardData } from "../../Sampledata";
-  
-  function LineGraph() {
-    return (
-      <ResponsiveContainer width={"100%"} height={250}>
-        <LineChart
-          width={730}
-          height={250}
-          data={DashboardData}
-          layout="vertical"
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis />
-          <YAxis dataKey="replication" type="category" />
-          <Tooltip
-            formatter={(value, name) => {
-              let unit = "";
-              // Define units based on the dataKey
-              if (name === "GerminationRate") unit = "%";
-              if (name === "NutrientLevel") unit = "mg/kg";
-              if (name === "PlantHeight") unit = "cm";
-              if (name === "YieldPerArea") unit = "kg/m²";
-              if (name === "InsectCount") unit = "per unit";
-              return [`${value} ${unit}`, name];
-            }}
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  LineChart,
+  Line,
+  ResponsiveContainer,
+} from "recharts";
+import { ChartProps } from "../../Sampledata";
+
+function LineGraph({ dashboardData }: ChartProps) {
+  const treatmentKeys = Object.keys(dashboardData[0]).filter(
+    (key) => key !== "title"
+  );
+  return (
+    <ResponsiveContainer width={"100%"} height={220}>
+      <LineChart
+        width={730}
+        height={250}
+        data={treatmentKeys.map((treatment) => {
+          const entry: any = { treatment };
+          dashboardData.forEach((replication: any) => {
+            entry[replication.title] = replication[treatment];
+          });
+          return entry;
+        })}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="treatment" type="category" />
+        <YAxis />
+        <Tooltip />
+        {dashboardData.map((replication: any) => (
+          <Line
+            key={replication.title}
+            dataKey={replication.title}
+            fill={replication.fillColor}
+            stroke={replication.fillColor}
           />
-          <Legend />
-          <Line dataKey="GerminationRate" fill="#8884d8" />
-          <Line dataKey="NutrientLevel" fill="#82ca9d" />
-          <Line dataKey="PlantHeight" fill="#ffc658" />
-          <Line dataKey="YieldPerArea" fill="#ff8042" />
-          <Line dataKey="InsectCount" fill="#00C49F" />
-        </LineChart>
-      </ResponsiveContainer>
-    );
-  }
-  
-  export default LineGraph;
-  
+        ))}
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}
+
+export default LineGraph;
