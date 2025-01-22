@@ -1,4 +1,4 @@
-import { TopNavBar, Avatar } from "my-material-theme-ui-components";
+import { TopNavBar } from "my-material-theme-ui-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import image from "../../assets/logo.png"
