@@ -1,7 +1,7 @@
 import { TopNavBar } from "my-material-theme-ui-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import image from "../../assets/logo.png"
+import image from "../../assets/logo.png";
 
 function TopNavBarComponnet({ isMobile }: any) {
   const navigate = useNavigate();
@@ -24,13 +24,14 @@ function TopNavBarComponnet({ isMobile }: any) {
     navigate(path);
     setcurrentUrl(path);
   };
+
   const NavItemArray = [
     {
       id: "home",
       label: "Home",
       className: "nav-item",
       ariaLabel: "Navigation Item 1",
-      isDisabled: false,
+      isDisabled: true,
       isClickable: true,
       $isActive: currentUrl === "/",
       onClick: () => {
@@ -42,7 +43,7 @@ function TopNavBarComponnet({ isMobile }: any) {
       label: "Projects",
       className: "nav-item",
       ariaLabel: "Navigation Item 2",
-      isDisabled: false,
+      isDisabled: true,
       isClickable: true,
       $isActive: currentUrl === "/projects",
       onClick: () => {
@@ -54,7 +55,7 @@ function TopNavBarComponnet({ isMobile }: any) {
       label: "Dashboards",
       className: "nav-item",
       ariaLabel: "Navigation Item 5",
-      isDisabled: false,
+      isDisabled: true,
       isClickable: true,
       $isActive: currentUrl === "/dashboards",
       onClick: () => {
@@ -66,7 +67,7 @@ function TopNavBarComponnet({ isMobile }: any) {
       label: "Notes",
       className: "nav-item",
       ariaLabel: "Navigation Item 3",
-      isDisabled: false,
+      isDisabled: true,
       isClickable: true,
       $isActive: currentUrl === "/Notes",
       onClick: () => {
@@ -78,31 +79,47 @@ function TopNavBarComponnet({ isMobile }: any) {
       label: "Gallery",
       className: "nav-item",
       ariaLabel: "Navigation Item 4",
-      isDisabled: false,
+      isDisabled: true,
       isClickable: true,
       $isActive: currentUrl === "/gallery",
       onClick: () => {
         handleClick("/gallery");
       },
     },
+    {
+      id: "navItem4",
+      label: "Office Days",
+      className: "nav-item",
+      ariaLabel: "Navigation Item 5",
+      isDisabled: false,
+      isClickable: true,
+      $isActive: currentUrl === "/",
+      onClick: () => {
+        handleClick("/office-days");
+      },
+    },
 
-    // {
-    //   id: "Testimonials",
-    //   label: "Contact",
-    //   className: "nav-item",
-    //   ariaLabel: "Navigation Item 6",
-    //   isDisabled: false,
-    //   isClickable: true,
-    //   $isActive: currentUrl === "/contact",
-    //   onClick: () => {
-    //     handleClick("/contact");
-    //   },
-    // },
+    {
+      id: "Testimonials",
+      label: "Contact",
+      className: "nav-item",
+      ariaLabel: "Navigation Item 6",
+      isDisabled: true,
+      isClickable: true,
+      $isActive: currentUrl === "/contact",
+      onClick: () => {
+        handleClick("/contact");
+      },
+    },
   ];
+
+  const getEnabledNavItems = () => {
+    return NavItemArray.filter((item) => !item.isDisabled);
+  };
 
   return (
     <TopNavBar
-      navItems={NavItemArray}
+      navItems={getEnabledNavItems()}
       topnavIcon={<img src={image} style={{ height: "auto", width: "50px" }} />}
       navbarHeaderText="Lab Field Connect"
       navBarHeaderDesc="Research Platform"

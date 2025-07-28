@@ -10,6 +10,7 @@ function App() {
   const Dashboards = lazy(() => import("./pages/Dashboards"));
   const Notes = lazy(() => import("./pages/Notes"));
   const Gallery = lazy(() => import("./pages/Gallery"));
+  const OfficeDays = lazy(() => import("./pages/OfficeDays"));
   const [isMobile, setisMobile] = useState<boolean>();
 
   const handleResize = () => {
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/notes" element={<Notes />} />
                 <Route path="/gallery" element={<Gallery />} />
+                <Route path="/office-days" element={<OfficeDays />} />
                 <Route path="*" element={<>no Page Found</>} />
               </Routes>
             </Suspense>
